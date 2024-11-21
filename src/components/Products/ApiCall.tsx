@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Product } from "./Types";
 import axios, { AxiosResponse } from "axios";
+import { PRODUCTS_BASE_URL } from "../../constants/AppConstants";
 
 const useGetProducts = () => {
   const[data, setData] = useState<Product[] | null>(null);
@@ -9,7 +10,7 @@ const useGetProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
         try{
-            const response: AxiosResponse<Product[]> = await axios.get('http://localhost:3000/products');
+            const response: AxiosResponse<Product[]> = await axios.get(`${PRODUCTS_BASE_URL}/products`);
             setData(response.data);
             setIsLoading(false);
           }
