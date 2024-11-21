@@ -1,2 +1,2 @@
-export const CART_BASE_URL = 'http://localhost:5000'
-export const PRODUCTS_BASE_URL = 'http://localhost:3000'
+export const CART_BASE_URL = 'https://candle-shop-bp3l.onrender.com'
+export const PRODUCTS_BASE_URL = 'https://candle-shop-bp3l.onrender.com'
