@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ProductCart } from "../components/Products/Types";
+import { CartState } from "../components/Products/Types";
 import { addToCartAsync, removeFromCartAsync } from "./cartAsyncActions"; 
 
 
