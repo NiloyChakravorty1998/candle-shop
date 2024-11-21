@@ -35,16 +35,19 @@ const PriceAndQuantity = ({ price, name, imageUrl, id }: Product) => {
 
     const handleAddToCart = () => {
         //SET TO STORE
-        const payload: ProductCart = {
-            imageUrl,
-            price,
-            name,
-            id,
-            quantity,
-            totalPrice: calculatedPrice
+        if (id !== undefined) {
+            const payload: ProductCart = {
+                imageUrl,
+                price,
+                name,
+                id,
+                quantity,
+                totalPrice: calculatedPrice
+            }
+
+            addToCart(payload);
+            navigate('/cart');
         }
-        addToCart(payload);
-        navigate('/cart');
     };
 
     return (
