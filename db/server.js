@@ -4,9 +4,15 @@ import cors from "cors";
 const app = express();
 const port = 8080; // Using port 8080
 
-// Middleware to parse JSON and handle CORS
-app.use(express.json());
-app.use(cors()); // Enable CORS for all routes
+const corsOptions = {
+    origin: 'https://candle-shop-nuea.onrender.com', // Allow this origin
+    methods: ['GET', 'POST', 'DELETE', 'PUT'], // Allow these methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
+  };
+  
+  // Middleware to parse JSON and handle CORS
+  app.use(express.json());
+  app.use(cors(corsOptions)); // Enable CORS with the specified options
 
 // In-memory data storage (mocking the JSON server)
 const db = {
