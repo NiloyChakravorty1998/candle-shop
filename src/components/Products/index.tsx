@@ -1,8 +1,8 @@
-import useGetProducts from "./ApiCall";
+import { useGetAllProductsQuery } from "../../storew/RTKQuery/productsAPISlice";
 import ProductCard from "./ProductCard";
 
 const Products = () => {
-  const { data } = useGetProducts();
+  const { data } = useGetAllProductsQuery()
   return (
     <>
       <div className="flex flex-col items-center justify-center my-8 text-slate-600">
