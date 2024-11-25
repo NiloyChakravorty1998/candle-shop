@@ -6,7 +6,7 @@ const port = 8080; // Using port 8080
 
 const corsOptions = {
     origin: 'https://candle-shop-nuea.onrender.com', // Allow this origin
-    methods: ['GET', 'POST', 'DELETE', 'PUT'], // Allow these methods
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'], // Allow these methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
   };
   
