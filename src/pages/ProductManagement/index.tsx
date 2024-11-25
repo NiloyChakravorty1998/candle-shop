@@ -3,7 +3,7 @@ import ProductCard from "../../components/Products/ProductCard";
 import { useDeleteProductMutation, useGetAllProductsQuery } from "../../storew/RTKQuery/productsAPISlice";
 
 const ProductManagement = () => {
-  const { data } = useGetAllProductsQuery(); 
+  const { data } = useGetAllProductsQuery();   
   const [deleteProductById] = useDeleteProductMutation();
   const navigate = useNavigate();
 
@@ -53,7 +53,7 @@ const ProductManagement = () => {
                   </button>
                   <button
                     className="mt-5 bg-yellow-500 rounded-xl px-5 py-1 text-white"
-                    onClick={() => handleDelete(`${item.id}`)}
+                    onClick={() => handleDelete(item.id ? item.id : '')}
                   >
                     Delete Product
                   </button>

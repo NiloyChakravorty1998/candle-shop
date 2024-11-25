@@ -3,7 +3,7 @@ import useGetCurrentProduct from "./ApiCall";
 import PriceAndQuantity from "./PriceAndQuantity";
 
 const ProductPage = () => {
-    const {data} = useGetCurrentProduct();
+    const { data } = useGetCurrentProduct();
     return (
         <div className="flex justify-between items-start px-[140px] py-[20px]">
             {/* LEFT SECTION */}

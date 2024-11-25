@@ -23,7 +23,7 @@ export const productsAPI = createApi({
                 method: 'POST',
                 body: product
             }),
-            invalidatesTags: ['Products']
+            invalidatesTags: ['Products', 'Product']
         }),
 
         updateProduct: builder.mutation<void, { id: string | undefined; product: Partial<Product> }>({
@@ -32,7 +32,7 @@ export const productsAPI = createApi({
                 method: 'PATCH',
                 body: product
             }),
-            invalidatesTags: ['Products']
+            invalidatesTags: ['Products', 'Product']
         }),
 
         deleteProduct: builder.mutation<void, string>({
@@ -40,7 +40,7 @@ export const productsAPI = createApi({
                 url: `/products/${id}`,
                 method: 'DELETE'
             }),
-            invalidatesTags: ['Products']
+            invalidatesTags: ['Products', 'Product']
         }),
     })
 })

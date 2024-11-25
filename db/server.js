@@ -13,6 +13,7 @@ const corsOptions = {
   // Middleware to parse JSON and handle CORS
   app.use(express.json());
   app.use(cors(corsOptions)); // Enable CORS with the specified options
+  // app.use(cors());
 
 // In-memory data storage (mocking the JSON server)
 const db = {
@@ -42,6 +43,53 @@ app.get("/products/:id", (req, res) => {
     return res.status(404).json({ message: "Product not found" });
   }
   res.json(product);
+});
+
+app.post("/products", (req, res) => {
+  const product = req.body;
+  const randomId = Date.now().toString();
+  const existingProduct = db.products.find((p) => p.id === product.id);
+
+  if (existingProduct) {
+    return res.status(400).json({ message: "Product with the same ID already exists" });
+  }
+
+  db.products.push({ ...product, id: randomId });
+  res.status(201).json({ message: "Product added successfully", product: { ...product, id: randomId } });
+});
+
+app.patch("/products/:id", (req, res) => {
+  const productIndex = db.products.findIndex((p) => p.id === req.params.id);
+
+  if (productIndex !== -1) {
+    const allowedUpdates = ["name", "imageUrl", "price"];
+    const updates = Object.keys(req.body);
+
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+    if (!isValidOperation) {
+      return res.status(400).json({ message: "Invalid updates" });
+    }
+
+    db.products[productIndex] = { ...db.products[productIndex], ...req.body };
+    return res.status(200).json({
+      message: "Product updated successfully",
+      product: db.products[productIndex],
+    });
+  }
+
+  res.status(404).json({ message: "Product not found" });
+});
+
+app.delete("/products/:id", (req, res) => {
+  const productId = req.params.id;
+  const productIndex = db.products.findIndex((p) => p.id === productId);
+
+  if (productIndex !== -1) {
+    db.products.splice(productIndex, 1);
+    return res.status(200).json({ message: `Product deleted with id: ${productId}` });
+  }
+
+  res.status(404).json({ message: "Product not found" });
 });
 
 // Routes for Cart
