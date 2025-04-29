@@ -1,25 +1,26 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { data } from '../../constants/Products';
 import { Product } from '../../components/Products/Types';
-import { useGetProductByIdQuery, useUpdateProductMutation } from '../../storew/RTKQuery/productsAPISlice';
 
 const EditProductForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data: currentProduct } = useGetProductByIdQuery(id || '');
-  const [updateProductById] = useUpdateProductMutation();
-
   const [product, setProduct] = useState<Partial<Product>>({});
   const [updateError, setUpdateError] = useState('');
 
   useEffect(() => {
-    if (currentProduct) {
-      setProduct(currentProduct);
+    if (id) {
+      const foundProduct = data.products.find((item) => item.id === id);
+      if (foundProduct) {
+        setProduct(foundProduct);
+      } else {
+        setUpdateError('Product not found');
+      }
     }
-  }, [currentProduct]);
+  }, [id]);
 
-  // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProduct((prev) => ({
@@ -28,25 +29,26 @@ const EditProductForm = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!id) {
-      setUpdateError('Invalid product ID');
+    if (!id || !product) {
+      setUpdateError('Invalid product data');
       return;
     }
 
-    try {
-      await updateProductById({
-        id,
-        product,
-      }).unwrap();
+    const index = data.products.findIndex((item) => item.id === id);
+    if (index !== -1) {
+      data.products[index] = {
+        ...data.products[index],
+        ...product,
+      };
       alert('Product updated successfully');
       navigate('/');
-    } catch (err) {
-      console.error('Error updating product:', err);
-      setUpdateError('Failed to update product. Please try again.');
+    } else {
+      setUpdateError('Product not found in data source');
     }
   };
+
   return (
     <div className="flex flex-col items-center justify-center my-8 text-slate-600">
       <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">

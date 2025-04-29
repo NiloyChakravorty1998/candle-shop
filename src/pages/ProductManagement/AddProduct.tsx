@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAddProductMutation } from '../../storew/RTKQuery/productsAPISlice';
+import { data } from '../../constants/Products'; // your local static data
 
 const AddProduct = () => {
-  const [addProduct] = useAddProductMutation();
-
   const [product, setProduct] = useState({
     name: '',
     imageUrl: '',
@@ -13,26 +11,27 @@ const AddProduct = () => {
 
   const navigate = useNavigate();
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProduct({
-      ...product,
+    setProduct((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      addProduct({
-        name: product.name,
-        imageUrl: product.imageUrl,
-        price: parseFloat(product.price), 
-      });
-      navigate('/');
-    } catch (err) {
-      console.error('Error adding product:', err);
-    }
+
+    const newProduct = {
+      id: Date.now().toString(), // simple unique ID
+      name: product.name,
+      imageUrl: product.imageUrl,
+      price: parseFloat(product.price),
+    };
+
+    data.products.push(newProduct); // Add to static data
+    alert('Product added successfully!');
+    navigate('/');
   };
 
   return (
@@ -41,9 +40,7 @@ const AddProduct = () => {
         <h1 className="text-2xl font-semibold mb-4">Add New Product</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700">
-              Product Name
-            </label>
+            <label htmlFor="name" className="block text-gray-700">Product Name</label>
             <input
               type="text"
               id="name"
@@ -55,9 +52,7 @@ const AddProduct = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="imageUrl" className="block text-gray-700">
-              Image URL
-            </label>
+            <label htmlFor="imageUrl" className="block text-gray-700">Image URL</label>
             <input
               type="text"
               id="imageUrl"
@@ -69,9 +64,7 @@ const AddProduct = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="price" className="block text-gray-700">
-              Price
-            </label>
+            <label htmlFor="price" className="block text-gray-700">Price</label>
             <input
               type="number"
               id="price"

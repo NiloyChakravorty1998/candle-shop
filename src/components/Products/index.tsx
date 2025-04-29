@@ -1,8 +1,10 @@
-import { useGetAllProductsQuery } from "../../storew/RTKQuery/productsAPISlice";
+//import { useGetAllProductsQuery } from "../../storew/RTKQuery/productsAPISlice";
+import { data } from '../../constants/Products'
 import ProductCard from "./ProductCard";
 
 const Products = () => {
-  const { data } = useGetAllProductsQuery()
+  // const { data } = useGetAllProductsQuery();
+  const productsData = data.products;
   return (
     <>
       <div className="flex flex-col items-center justify-center my-8 text-slate-600">
@@ -16,7 +18,7 @@ const Products = () => {
         {/* PRODUCT CARDS */}
         <div className="h-auto w-full bg-white">
           <div className="pl-[140px] pr-[140px] grid grid-cols-4 gap-[25px] pt-[80px]">
-            {data && data.map((item) => (<ProductCard id={item.id} key={item.id} name={item.name} imageUrl={item.imageUrl} price={item.price} />))}
+            {data && productsData.map((item) => (<ProductCard id={item.id} key={item.id} name={item.name} imageUrl={item.imageUrl} price={item.price} />))}
           </div>
         </div>
       </div>

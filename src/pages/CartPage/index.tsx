@@ -2,19 +2,28 @@ import { useNavigate } from "react-router-dom";
 import ProductRow from "./ProductRow";
 import { useState, useEffect } from "react";
 import { useGetCartQuery } from "../../storew/RTKQuery/cartAPISlice";
+import { data } from "../../constants/Products";
 
 const CartPage = () => {
-  const {data: cart} = useGetCartQuery();
+  const [cart, setCart] = useState(data.cart); // <-- cart state
   const [subTotal, setSubTotal] = useState<number>(0);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (cart && cart.length > 0) {
-      const sT = cart.map((item) => item.product.totalPrice).reduce((prev, curr) => prev + curr, 0);
+      const sT = cart.map((item) => item.totalPrice).reduce((prev, curr) => prev + curr, 0);
       setSubTotal(sT);
     } else {
       setSubTotal(0);
     }
-  }, [cart]); 
+
+    // Also update `data.cart` so it's always in sync with local cart
+    data.cart = cart;
+  }, [cart]);
+
+  const handleRemoveItem = (id: string) => {
+    setCart((prev) => prev.filter((item) => item.id !== id));
+  };
 
   return (
     <div className="px-[140px] flex-col items-center justify-center mt-4">
@@ -34,24 +43,18 @@ const CartPage = () => {
         </ul>
       </div>
 
-      {/* Render cart items */}
       {cart && cart.length > 0 ? (
         cart.map((item) => (
           <ProductRow
             key={item.id}
-            id={item.id}
-            price={item.product.price}
-            imageUrl={item.product.imageUrl}
-            name={item.product.name}
-            quantity={item.product.quantity}
-            totalPrice={item.product.totalPrice}
+            {...item}
+            onRemove={handleRemoveItem}
           />
         ))
       ) : (
-        <p>Your cart is empty</p> // Show message if cart is empty
+        <p>Your cart is empty</p>
       )}
 
-      {/* Display subtotal and checkout button */}
       <div className="flex items-center gap-4 text-xl justify-center my-10">
         <h1>Sub-total</h1>
         <h1>{subTotal}$</h1>
