@@ -2,7 +2,6 @@ import { useState } from "react";
 import Checkbox from "../../components/Checkbox";
 import { useNavigate } from "react-router-dom";
 import { Product, ProductCart } from "../../components/Products/Types";
-import { useAddToCartMutation } from "../../storew/RTKQuery/cartAPISlice";
 import { data } from '../../constants/Products';
 
 
@@ -11,7 +10,7 @@ const PriceAndQuantity = ({ price, name, imageUrl, id }: Product) => {
     
     const [quantity, setQuantity] = useState<number>(1);
     const [calculatedPrice, setCalculatedPrice] = useState<number>(price);
-    const [addToCart] = useAddToCartMutation();
+    // const [addToCart] = useAddToCartMutation();
     const navigate = useNavigate();
 
     const increment = () => {

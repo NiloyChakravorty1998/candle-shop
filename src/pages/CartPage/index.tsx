@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ProductRow from "./ProductRow";
 import { useState, useEffect } from "react";
-import { useGetCartQuery } from "../../storew/RTKQuery/cartAPISlice";
 import { data } from "../../constants/Products";
 
 const CartPage = () => {
